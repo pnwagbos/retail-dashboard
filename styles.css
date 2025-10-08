@@ -1,0 +1,103 @@
+:root {
+  --primary-color: #008080;
+  --secondary-color: #004d4d;
+  --accent-color: #00cccc;
+}
+
+body.palette-teal {
+  --primary-color: #008080;
+  --secondary-color: #004d4d;
+  --accent-color: #00cccc;
+}
+
+body.palette-blue {
+  --primary-color: #005f99;
+  --secondary-color: #003f66;
+  --accent-color: #66ccff;
+}
+
+body.palette-warm {
+  --primary-color: #cc6600;
+  --secondary-color: #994d00;
+  --accent-color: #ff9933;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  padding-left: 250px;
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background-color: var(--primary-color);
+  overflow-y: auto;
+  padding: 15px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+}
+
+.utility-bar {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background-color: var(--primary-color);
+  align-items: center;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--accent-color);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.metrics-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+}
+
+.metrics-grid > div {
+  background-color: var(--accent-color);
+  padding: 15px;
+  border-radius: 8px;
+  flex: 1 1 200px;
+}
+
+canvas {
+  max-width: 100%;
+  margin: 20px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+table, th, td {
+  border: 1px solid white;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}

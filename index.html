@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Retail Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="palette-teal">
+  <div id="guideSidebar" class="sidebar open">
+    <h2><i class="fas fa-info-circle"></i> Data Guide</h2>
+    <h3>Required Columns</h3>
+    <table id="requiredColumnsTable"></table>
+    <h3>KPI Guide</h3>
+    <table id="kpiGuideTable"></table>
+  </div>
+
+  <div class="utility-bar">
+    <input type="file" id="excelFile" />
+    <button id="runAnalysisBtn"><i class="fas fa-play"></i> Run Analysis</button>
+    <select id="colorPaletteDropdown">
+      <option value="palette-teal">Teal</option>
+      <option value="palette-blue">Blue</option>
+      <option value="palette-warm">Warm</option>
+    </select>
+    <button id="resetBtn"><i class="fas fa-redo"></i></button>
+    <button id="toggleDarkMode"><i class="fas fa-moon"></i></button>
+    <button id="zoomBtn"><i class="fas fa-search-plus"></i></button>
+  </div>
+
+  <div id="statusArea">
+    <div id="loader" class="spinner hidden"></div>
+    <p id="statusMessage"></p>
+    <p id="runtimeDisplay"></p>
+  </div>
+
+  <div id="dashboardContainer" class="hidden">
+    <section id="metrics" class="metrics-grid"></section>
+
+    <section id="salesInsights">
+      <canvas id="salesTrendsChart"></canvas>
+      <canvas id="categorySalesChart"></canvas>
+      <table id="topProductsTable"></table>
+    </section>
+
+    <section id="inventoryManagement">
+      <div id="inventoryMetrics" class="metrics-grid"></div>
+      <table id="reorderTable"></table>
+    </section>
+
+    <section id="profitability">
+      <div id="profitMetrics" class="metrics-grid"></div>
+      <table id="productProfitTable"></table>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

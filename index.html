@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enhanced Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="palette-modern">
+  <div class="left-panel">
+    <h2>Dashboard Menu</h2>
+    <h3>Required Columns</h3>
+    <table id="requiredColumnsTable" class="tooltip-table"></table>
+    <h3>KPI Guide</h3>
+    <table id="kpiGuideTable" class="tooltip-table"></table>
+  </div>
+
+  <div class="utility-bar">
+    <input type="file" id="excelFile" />
+    <button id="runAnalysisBtn">Run Analysis</button>
+    <select id="colorPaletteDropdown">
+      <option value="palette-modern">Modern</option>
+      <option value="palette-blue">Blue</option>
+      <option value="palette-warm">Warm</option>
+    </select>
+    <div id="loader" class="spinner hidden"></div>
+    <span id="statusMessage"></span>
+  </div>
+
+  <div id="dashboardContainer" class="hidden">
+    <div id="metrics" class="metrics-grid"></div>
+    <canvas id="salesTrendsChart"></canvas>
+    <canvas id="categorySalesChart"></canvas>
+    <h3>Top Products</h3>
+    <table id="topProductsTable"></table>
+    <h3>Reorder Alerts</h3>
+    <table id="reorderTable"></table>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retail Sales & Inventory Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <aside id="guideSidebar" class="sidebar">
+        <button id="toggleSidebarBtn" class="sidebar-toggle-btn" aria-label="Toggle Sidebar"><i class="fas fa-chevron-left"></i></button>
+        <div class="sidebar-content">
+            <h2>Data Guide</h2>
+            <p>Upload a file and ensure it contains columns similar to those below.</p>
+
+            <h3>Required Columns</h3>
+            <div class="table-container">
+                <table id="requiredColumnsTable">
+                    </table>
+            </div>
+
+            <h3>KPI Quick Guide</h3>
+            <div class="table-container">
+                <table id="kpiGuideTable">
+                    </table>
+            </div>
+        </div>
+    </aside>
+
+    <main id="mainContent">
+        <header class="dashboard-header">
+            <h1>Retail Dashboard</h1>
+            <div class="controls-area">
+                <input type="file" id="excelFile" accept=".xlsx, .xls, .csv">
+                <button id="runAnalysisBtn" disabled><i class="fas fa-play"></i> Run Analysis</button>
+
+                <div class="utility-bar">
+                    <div class="palette-dropdown">
+                        <button class="palette-btn" aria-expanded="false" aria-controls="paletteMenu">
+                            <i class="fas fa-palette"></i> Palette
+                        </button>
+                        <div id="paletteMenu" class="palette-menu">
+                            <button class="palette-option" data-palette="palette-teal">Teal (Default)</button>
+                            <button class="palette-option" data-palette="palette-blue">Blue</button>
+                            <button class="palette-option" data-palette="palette-warm">Warm</button>
+                        </div>
+                    </div>
+                    <button id="resetAppBtn" class="reset-btn" title="Reset Application"><i class="fas fa-redo"></i> Reset</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="status-area">
+            <div id="loader" class="loader hidden"></div>
+            <p id="statusMessage">Awaiting file upload...</p>
+            <p id="runtimeDisplay" class="runtime-display"></p>
+        </div>
+
+        <div id="dashboardContainer" class="dashboard-container hidden">
+
+            <section class="dashboard-section">
+                <h2>Overview Metrics</h2>
+                <div id="metrics" class="metrics-grid">
+                    </div>
+            </section>
+
+            <section class="dashboard-section">
+                <h2>Sales Insights</h2>
+                <div class="charts-and-tables-grid">
+                    <div class="chart-container">
+                        <h3>Sales Trends Over Time</h3>
+                        <canvas id="salesTrendsChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Sales by Product Category</h3>
+                        <canvas id="categorySalesChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider">
+                <div class="table-container wide">
+                    <h3>Top 10 Selling Products (by Revenue)</h3>
+                    <table id="topProductsTable" class="data-table">
+                        <thead><tr><th>Rank</th><th>Product</th><th>Revenue</th><th>Profit</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <section class="dashboard-section">
+                <h2>Inventory Management & Profitability</h2>
+                <div id="inventoryMetrics" class="metrics-grid half-width">
+                    </div>
+            </section>
+
+            <div class="charts-and-tables-grid">
+                <div class="table-container">
+                    <h3>Low Stock/Reorder Suggestions</h3>
+                    <table id="reorderTable" class="data-table alert-table">
+                        <thead><tr><th>Product</th><th>Stock</th><th>Reorder Point</th><th>Status</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="table-container">
+                    <h3>Product Profitability Analysis</h3>
+                    <table id="productProfitTable" class="data-table">
+                        <thead><tr><th>Product</th><th>Margin (%)</th><th>Total Profit</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,668 @@
+/* --- 3. styles.css Requirements --- */
+
+/* --- Color Palettes (CSS Variables) --- */
+:root {
+    /* Default: Teal Palette */
+    --primary-color: #00796B; /* Teal 700 */
+    --secondary-color: #26A69A; /* Teal 400 */
+    --accent-color: #FFB300; /* Amber 600 */
+    --background-color: #f4f7f6;
+    --text-color: #333;
+    --card-bg: #fff;
+    --card-shadow: rgba(0, 0, 0, 0.05);
+    --border-color: #eee;
+}
+
+/* Palette 2: Blue */
+.palette-blue {
+    --primary-color: #1976D2; /* Blue 700 */
+    --secondary-color: #42A5F5; /* Blue 400 */
+    --accent-color: #FF5722; /* Deep Orange */
+}
+
+/* Palette 3: Warm */
+.palette-warm {
+    --primary-color: #D84315; /* Deep Orange 800 */
+    --secondary-color: #FF8A65; /* Deep Orange 300 */
+    --accent-color: #1976D2; /* Blue 700 */
+}
+
+
+/* --- Global Layout & Reset --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding-bottom: 50px; /* Space for footer/content below fold */
+}
+
+main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* --- Header and Controls --- */
+.dashboard-header {
+    background-color: var(--card-bg);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.dashboard-header h1 {
+    color: var(--primary-color);
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+.controls-area {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+}
+
+.file-input-group {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 250px;
+}
+
+#excelFile {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.file-guide-text {
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.file-guide-text a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+/* General Button Styling */
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+#runAnalysisBtn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#runAnalysisBtn:hover {
+    background-color: var(--secondary-color);
+}
+
+#runAnalysisBtn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.utility-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto; /* Push utility bar to the right */
+}
+
+.reset-btn {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+.reset-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* --- Status Area --- */
+.status-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px var(--card-shadow);
+}
+
+#statusMessage {
+    font-size: 1em;
+    font-style: italic;
+    color: var(--text-color);
+    white-space: pre-wrap; /* Allows multiline error messages */
+}
+
+.runtime-display {
+    margin-left: auto;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+
+.loader.hidden {
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- Dashboard Layout --- */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dashboard-section h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.metrics-grid {
+    display: grid;
+    /* Updated for 9 cards - 3 columns, auto-fitting */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Metric Card Styling */
+.metric-card {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--card-shadow);
+    text-align: center;
+    border-left: 5px solid var(--primary-color);
+    transition: transform 0.2s;
+    min-height: 120px;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.metric-card .icon {
+    font-size: 1.5em;
+    color: var(--accent-color);
+    margin-bottom: 5px;
+}
+
+.metric-card .value {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-top: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.metric-card .title {
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Inventory Metrics (Slightly narrower grid for 6 cards) */
+#inventoryMetrics.metrics-grid {
+     /* 3 columns on wide screen, 2 on medium */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+
+/* --- Charts and Tables --- */
+.charts-and-tables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.chart-container {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--card-shadow);
+    height: 420px; /* UPDATED: Increased height for X-axis labels */
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-container h3 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+.chart-header-with-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.chart-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.chart-toggle-btn {
+    background-color: #f0f0f0;
+    color: #555;
+    padding: 5px 8px;
+    font-size: 0.9em;
+}
+
+.chart-toggle-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.chart-container canvas {
+    flex-grow: 1;
+}
+
+.table-container {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--card-shadow);
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+.data-table th, .data-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table th {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    font-weight: bold;
+    /* NEW: Sorting Styles - Ensure header is clickable */
+    cursor: pointer; 
+    user-select: none;
+    position: relative;
+}
+
+/* NEW: Sort Icon Styling */
+.data-table th i {
+    font-size: 0.8em;
+    margin-left: 5px;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.data-table th:hover i,
+.data-table th.sort-asc i,
+.data-table th.sort-desc i {
+    opacity: 1;
+}
+
+.data-table th:hover {
+    background-color: #e8e8e8; /* Light hover effect */
+}
+
+/* Ensure non-sortable headers still look like headers */
+.data-table th:not([data-sort-key]) {
+    cursor: default;
+    background-color: var(--background-color);
+}
+/* END NEW SORTING STYLES */
+
+
+.data-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Table specific styling */
+.alert-table td {
+    font-weight: bold;
+}
+
+.low-stock {
+    color: #f44336; /* Red */
+}
+
+.reorder-safe {
+    color: var(--primary-color);
+}
+
+/* --- ABC Analysis Table Styles --- */
+.segment-a {
+    background-color: #e0f2f1; /* Light Teal */
+    border-left: 4px solid var(--primary-color);
+    font-weight: bold;
+}
+
+.segment-b {
+    background-color: #fffde7; /* Light Yellow */
+    border-left: 4px solid var(--accent-color);
+}
+
+.segment-c {
+    background-color: #fce4ec; /* Light Pink */
+    border-left: 4px solid #f44336; /* Red */
+}
+
+
+/* --- Filter Bar --- */
+.filter-bar {
+    background-color: var(--card-bg);
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--card-shadow);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+    flex-grow: 1; /* Allows most filters to grow */
+}
+
+/* Styling for the new proxy inputs (Sq Ft and Traffic) */
+.filter-group.proxy-input {
+    min-width: 120px; /* Smaller minimum width for numerical inputs */
+    max-width: 180px; /* Max width to prevent them from dominating the bar */
+    flex-grow: 0.5; /* Prioritize the date/category/product filters */
+}
+
+.filter-group label {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.filter-bar input[type="date"],
+.filter-bar input[type="number"], /* Added number input type */
+.filter-bar select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 1em;
+    min-width: 100%;
+}
+
+.filter-bar select[multiple] {
+    height: 35px; /* Minimal height for better display */
+    overflow-y: hidden;
+}
+
+.apply-filter-btn {
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    align-self: flex-end; /* Align button to the bottom of the group */
+}
+
+.apply-filter-btn:hover {
+    background-color: #ffc107;
+}
+
+.clear-filter-btn {
+    background-color: #f0f0f0;
+    color: #555;
+    align-self: flex-end;
+}
+
+.clear-filter-btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* --- Data Guide & Palette Dropdown Containers --- */
+.guide-dropdown, .palette-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.guide-btn {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.guide-btn:hover {
+    background-color: var(--primary-color);
+}
+
+.palette-btn {
+    background-color: #607d8b; /* Blue Grey */
+    color: white;
+}
+
+.palette-btn:hover {
+    background-color: #455a64;
+}
+
+/* --- Dropdown Panel (Menu) Styles --- */
+.guide-panel {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 600px; /* Wide panel for readability */
+    max-height: 80vh;
+    overflow-y: auto;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(10px);
+    display: none; /* Controlled by JS/'.open' */
+}
+
+/* Updated palette menu styles to match guide panel positioning */
+.palette-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 5px 0;
+    z-index: 10;
+    min-width: 150px;
+    display: none; /* Controlled by JS/'.open' */
+    flex-direction: column;
+    margin-top: 5px; /* Spacing below the button */
+}
+
+/* JS Toggle Rule: Show the dropdown when the parent container has the 'open' class */
+.guide-dropdown.open .guide-panel {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+    display: block; /* Show the content */
+}
+
+.palette-dropdown.open .palette-menu {
+    display: flex; /* Use flex to display options */
+}
+
+.guide-panel h3 {
+    color: var(--primary-color);
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.guide-table-container {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.small-table td {
+    padding: 5px 10px;
+}
+
+/* Tooltip for Guide Tables */
+.tooltip-container {
+    position: relative;
+    cursor: help; /* Indicates a hoverable item */
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 280px; /* Slightly wider */
+    background-color: #333;
+    color: white;
+    text-align: left;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 20;
+    bottom: calc(100% + 10px); /* Position above the row */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+    font-size: 0.85em;
+    pointer-events: none; /* Allows clicks on elements behind it */
+}
+
+/* Arrow for the tooltip */
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Palette Menu Options */
+.palette-menu .palette-option {
+    width: 100%;
+    text-align: left;
+    padding: 10px 15px;
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    font-weight: normal;
+    transition: background-color 0.1s;
+}
+
+.palette-menu .palette-option:hover {
+    background-color: #f0f0f0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    /* Adjust metrics grid on larger tablets/smaller laptops */
+    .metrics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    /* Stack header elements */
+    .dashboard-header, .status-area, .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .controls-area {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .utility-bar {
+        margin-left: 0;
+        justify-content: space-around;
+    }
+
+    /* Adjust grids to two columns or one column */
+    .metrics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .charts-and-tables-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Full width buttons/inputs on mobile */
+    #runAnalysisBtn, .file-input-group, .filter-bar button, .filter-bar input, .filter-bar select {
+        width: 100%;
+    }
+    
+    .filter-group {
+        min-width: 100%;
+    }
+
+    /* Ensure proxy inputs also take full width on mobile */
+    .filter-group.proxy-input {
+        max-width: 100%;
+    }
+
+    .guide-panel {
+        width: 95vw;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

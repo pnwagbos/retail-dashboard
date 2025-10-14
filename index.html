@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retail Sales & Inventory Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <main id="mainContent">
+        <header class="dashboard-header">
+            <h1>Retail Dashboard</h1>
+            <div class="controls-area">
+                <div class="file-input-group">
+                    <input type="file" id="excelFile" accept=".xlsx, .xls, .csv">
+                    <p class="file-guide-text">
+                        Don't have a file? <a href="#" id="download-sample-link">Download Sample Data (CSV)</a>
+                    </p>
+                </div>
+                <button id="runAnalysisBtn" disabled><i class="fas fa-redo"></i> Clear Data & New File</button>
+
+                <div class="utility-bar">
+                    
+                    <div id="dataGuideDropdown" class="guide-dropdown">
+                        <button id="dataGuideBtn" class="guide-btn" aria-expanded="false">
+                            <i class="fas fa-question-circle"></i> Data Guide
+                        </button>
+                        <div id="guidePanel" class="guide-panel">
+                            <h3>Required Columns (Hover for Details)</h3>
+                            <div class="guide-table-container">
+                                <table id="requiredColumnsTable" class="data-table small-table"></table>
+                            </div>
+
+                            <h3>KPI Quick Guide (Hover for Details)</h3>
+                            <div class="guide-table-container">
+                                <table id="kpiGuideTable" class="data-table small-table"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="paletteDropdown" class="palette-dropdown dropdown-control">
+                        <button id="paletteBtn" class="palette-btn" aria-expanded="false" aria-controls="paletteMenu">
+                            <i class="fas fa-palette"></i> Palette
+                        </button>
+                        <div id="paletteMenu" class="palette-menu">
+                            <button class="palette-option" data-palette="palette-teal">Teal (Default)</button>
+                            <button class="palette-option" data-palette="palette-blue">Blue</button>
+                            <button class="palette-option" data-palette="palette-warm">Warm</button>
+                        </div>
+                    </div>
+                    <button id="resetAppBtn" class="reset-btn" title="Clear Dashboard"><i class="fas fa-eraser"></i> Clear Dashboard</button>
+                </div>
+            </div>
+        </header>
+        
+        <div id="filterBar" class="filter-bar">
+            <div class="filter-group">
+                <label for="startDateFilter">Start Date:</label>
+                <input type="date" id="startDateFilter">
+            </div>
+            <div class="filter-group">
+                <label for="endDateFilter">End Date:</label>
+                <input type="date" id="endDateFilter">
+            </div>
+            <div class="filter-group">
+                <label for="categoryFilter">Category:</label>
+                <select id="categoryFilter" multiple size="10"></select>
+            </div>
+            <div class="filter-group">
+                <label for="productFilter">Product:</label>
+                <select id="productFilter" multiple size="10"></select>
+            </div>
+            <div class="filter-group proxy-input">
+                <label for="sqFootageInput">Store Sq. Ft. (SPSF):</label>
+                <input type="number" id="sqFootageInput" value="5000" min="1">
+            </div>
+            <div class="filter-group proxy-input">
+                <label for="trafficInput">Foot Traffic (CR):</label>
+                <input type="number" id="trafficInput" value="5000" min="0">
+            </div>
+            <button id="applyFilterBtn" class="apply-filter-btn">Apply Filters</button>
+            <button id="clearFilterBtn" class="clear-filter-btn"><i class="fas fa-filter-slash"></i> Clear</button>
+        </div>
+        <div class="status-area">
+            <div id="loader" class="loader hidden"></div>
+            <p id="statusMessage">Loading sample dashboard...</p>
+            <p id="runtimeDisplay" class="runtime-display"></p>
+        </div>
+
+        <div id="dashboardContainer" class="dashboard-container"> 
+            <section class="dashboard-section">
+                <h2>Overview Metrics</h2>
+                <div id="metrics" class="metrics-grid">
+                </div>
+            </section>
+
+            <section class="dashboard-section">
+                <h2>Sales Insights</h2>
+                <div class="charts-and-tables-grid">
+                    <div class="chart-container">
+                        <div class="chart-header-with-controls">
+                            <h3>Sales Trends Over Time (Monthly)</h3>
+                            <div class="chart-controls">
+                                <button class="chart-toggle-btn active" data-chart="salesTrendsChart" data-type="bar" title="Bar Chart"><i class="fas fa-chart-bar"></i></button>
+                                <button class="chart-toggle-btn" data-chart="salesTrendsChart" data-type="line" title="Line Chart"><i class="fas fa-chart-line"></i></button>
+                            </div>
+                        </div>
+                        <canvas id="salesTrendsChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Sales by Product Category</h3>
+                        <canvas id="categorySalesChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider">
+                <div class="table-container wide">
+                    <h3>Top 10 Selling Products (by Revenue)</h3>
+                    <table id="topProductsTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th data-sort-key="Product" data-sort-type="string">Product <i class="fas fa-sort"></i></th>
+                                <th data-sort-key="Revenue" data-sort-type="number">Revenue <i class="fas fa-sort"></i></th>
+                                <th data-sort-key="Profit" data-sort-type="number">Profit <i class="fas fa-sort"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <section class="dashboard-section">
+                <h2>Inventory Management & Profitability</h2>
+                <div id="inventoryMetrics" class="metrics-grid half-width">
+                </div>
+            </section>
+
+            <div class="charts-and-tables-grid">
+                <div class="table-container">
+                    <h3>Low Stock/Reorder Suggestions</h3>
+                    <table id="reorderTable" class="data-table alert-table">
+                        <thead>
+                            <tr>
+                                <th data-sort-key="Product" data-sort-type="string">Product <i class="fas fa-sort"></i></th>
+                                <th data-sort-key="StockLevel" data-sort-type="number">Stock <i class="fas fa-sort"></i></th>
+                                <th data-sort-key="ReorderPoint" data-sort-type="number">Reorder Point <i class="fas fa-sort"></i></th>
+                                <th data-sort-key="IsLowStock" data-sort-type="string">Status <i class="fas fa-sort"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Top 10 Products by Profit</h3>
+                    <canvas id="topProductsChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="section-divider">
+                <div class="table-container wide">
+                    <h3>Product Profitability Analysis (Detailed)</h3>
+                    <table id="productProfitTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-sort-key="Product" data-sort-type="string">Product <i class="fas fa-sort"></i></th>
+                                <th data-sort-key="Margin" data-sort-type="number">Margin (%) <i class="fas fa-sort"></i></th>
+                                <th data-sort-key="Profit" data-sort-type="number">Total Profit <i class="fas fa-sort"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <section class="dashboard-section">
+                <h2>Product Segmentation (ABC Analysis)</h2>
+                <div class="table-container wide">
+                    <h3>Contribution by Revenue (Pareto 80/15/5)</h3>
+                    <table id="abcAnalysisTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th data-sort-key="Product" data-sort-type="string">Product <i class="fas fa-sort"></i></th>
+                                <th data-sort-key="Category" data-sort-type="string">Category <i class="fas fa-sort"></i></th>
+                                <th data-sort-key="Revenue" data-sort-type="number">Revenue <i class="fas fa-sort"></i></th>
+                                <th data-sort-key="CumulativePercent" data-sort-type="number">Cumulative % <i class="fas fa-sort"></i></th>
+                                <th data-sort-key="Segment" data-sort-type="string">Segment <i class="fas fa-sort"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+            </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
